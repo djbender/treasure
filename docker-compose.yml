@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  rubygems:
+    environment:
+      RUBYGEMS_PROXY: true
+    image: spoonest/geminabox:latest
+    init: true
+    ports:
+      - "9292:9292"
+    volumes:
+      - rubygems_data:/webapps/geminabox/data
+
+volumes:
+  rubygems_data: {}
