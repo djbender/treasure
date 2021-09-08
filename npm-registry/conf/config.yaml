@@ -1,0 +1,13 @@
+storage: /verdaccio/storage
+
+auth:
+  htpasswd:
+    # file: /verdaccio/conf/htpasswd
+    # disable registration
+    max_users: -1
+
+web:
+  enable: true
+
+logs:
+  - {type: stdout, format: pretty, level: trace}

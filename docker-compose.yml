@@ -1,15 +1,39 @@
 version: '3.8'
 
 services:
-  rubygems:
+  gem-registry:
     environment:
       RUBYGEMS_PROXY: true
     image: spoonest/geminabox:latest
     init: true
     ports:
-      - "9292:9292"
+      - '9292:9292'
+    restart: always
     volumes:
-      - rubygems_data:/webapps/geminabox/data
+      - gem-registry-data:/webapps/geminabox/data
+
+  npm-registry:
+    image: verdaccio/verdaccio:5
+    ports:
+      - '4873:4873'
+    restart: always
+    volumes:
+      - ./npm-registry/conf:/verdaccio/conf
+      - npm-registry-data:/verdaccio/storage
+
+  docker-registry:
+    environment:
+      REGISTRY_STORAGE_FILESYSTEM_ROOTDIRECTORY: /var/lib/registry
+      REGISTRY_HTTP_SECRET: sekret
+      REGISTRY_PROXY_REMOTEURL: https://registry-1.docker.io
+    image: registry:2
+    ports:
+      - '5000:5000'
+    restart: always
+    volumes:
+      - docker-registry-data:/var/lib/registry
 
 volumes:
-  rubygems_data: {}
+  gem-registry-data: {}
+  npm-registry-data: {}
+  docker-registry-data: {}
